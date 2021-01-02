@@ -49,21 +49,21 @@ MIND YOUR SYNTAX:
 	"level":0,
 	"arguments":0,
 	"sourceLimited":0,
-	"orginModule":"extensions"
+	"orginModule":"CC"
 },
 "vote":{	
 	"description":"Vote for a player to be kicked, \/vote <ID>",
 	"level":0,
 	"arguments":1,
 	"sourceLimited":0,
-	"orginModule":"extensions"
+	"orginModule":"CC"
 },
 "votecancel":{	
 	"description":"Cancel a voteKick",
 	"level":9,
 	"arguments":0,
 	"sourceLimited":0,
-	"orginModule":"extensions"
+	"orginModule":"CC"
 },
 ```
 
