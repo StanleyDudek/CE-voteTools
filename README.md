@@ -100,7 +100,7 @@ This extension's commands are:
 `/vote`
 `/votecancel`
 
-* To start a voteKick, any player may use `/votekick`. This will print the list of players currently on the server, and give usage instructions for '/vote'.
+* To start a voteKick, any player may use `/votekick`. This will print the list of players currently on the server, and give usage instructions for `/vote`.
 
 * When a voteKick is active, players may use `/vote <playerID>` to vote for a player.
 
