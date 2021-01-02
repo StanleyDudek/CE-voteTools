@@ -11,7 +11,7 @@ The next few steps are required to support and use this extension:
 #### 2. ADD THE FOLLOWING TO .../Resources/Server/CobaltEssentials/lua/CobaltCommands.lua, NOTE THE SECTIONS THESE BELONG IN:
 
 ```lua
--------------------------------------------------------FUNCTIONS--------------------------------------------------------
+-----------------------------------------------FUNCTIONS-----------------------------------------------
 
 local function votekick(player, ... )
 	extensions.triggerEvent("onVoteStart", player.playerID)
@@ -25,7 +25,7 @@ local function votecancel(player, ... )
 	extensions.triggerEvent("onVoteReset", player.playerID)
 end
 
------------------------------------------------------PUBLICINTERFACE-----------------------------------------------------
+-----------------------------------------------PUBLICINTERFACE-----------------------------------------------
 
 ----COMMANDS----
 
