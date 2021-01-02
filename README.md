@@ -11,6 +11,7 @@
 
 #### 2. ADD THE FOLLOWING TO:
 `.../Resources/Server/CobaltEssentials/lua/CobaltCommands.lua`
+
 NOTE THE SECTIONS THESE BELONG IN:
 
 ```
@@ -39,6 +40,7 @@ M.votecancel = votecancel
 
 #### 3. ADD THE FOLLOWING TO:
 `.../Resources/Server/CobaltEssentials/CobaltDB/commands.json`
+
 MIND YOUR SYNTAX:
 
 ```json
@@ -67,6 +69,7 @@ MIND YOUR SYNTAX:
 
 #### 4. ADD THE FOLLOWING TO:
 `.../Resources/Server/CobaltEssentials/LoadExtensions.cfg`
+
 REPLACING OR PLACED UNDER THE EXAMPLE
 
 ```
