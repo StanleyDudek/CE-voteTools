@@ -14,7 +14,7 @@
 
 NOTE THE SECTIONS THESE BELONG IN:
 
-```
+```lua
 ---------------------------------------------FUNCTIONS---------------------------------------------
 
 local function votekick(player, ... )
@@ -72,7 +72,7 @@ MIND YOUR SYNTAX:
 
 REPLACING OR PLACED UNDER THE EXAMPLE
 
-```
+```cfg
 # Add your new extensions here as a key/value pair
 # The first one is the name in the lua enviroment
 # The second value is the file path to the main lua from CobaltEssentials/extensions
@@ -84,7 +84,7 @@ voteKick = "voteKick"
 ## Configuration:
 At the top of voteKick.lua you will see three configurables:
 
-```
+```lua
 --config these to your preference
 local voteTimeout = 60 --how long a voteKick is open
 local immuneLevel = 2 --this CE player permission level and above cannot be voted for
