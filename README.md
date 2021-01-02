@@ -60,7 +60,7 @@ M.votecancel = votecancel
 },
 ```
 
-#### 4. ADD THE FOLLOWING TO .../Resources/Server/CobaltEssentials/LoadExtensions.cfg REPLACING OR PLACED UNDER THE EXAMPLE
+#### 4. ADD THE FOLLOWING TO .../Resources/Server/CobaltEssentials/LoadExtensions.cfg, REPLACING OR PLACED UNDER THE EXAMPLE
 
 ```cfg
 # Add your new extensions here as a key/value pair
