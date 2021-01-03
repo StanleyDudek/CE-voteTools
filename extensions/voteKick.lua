@@ -1,7 +1,7 @@
 local M = {}
 
 --config these to your preference
-local voteTimeout = 60 --how long a voteKick is open
+local voteTimeout = 60 --how long a voteKick is open, in seconds
 local immuneLevel = 2 --this CE player permission level and above cannot be voted for
 local voteRatio = 0.3 --what percent of connected players must vote for a candidate for them to be kicked
 
