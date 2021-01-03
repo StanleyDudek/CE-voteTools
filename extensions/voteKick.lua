@@ -109,6 +109,7 @@ end
 --checks for players that have votes over the ratio threshold, and if they are, kicks them immediately,
 --they won't be able to rejoin until either the voteKick naturally times out or is manually reset.
 local function onTick(age)
+	age = age / 1000
 	if voteActive == true then
 		if age >= voteLast + voteTimeout then
 			onVoteReset()
