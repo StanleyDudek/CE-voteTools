@@ -122,7 +122,7 @@ local function onTick(age)
 				end
 			end
 			if votePlayerCount > 3 then
-				local voteThresh = votePlayerCount / voteRatio * 10
+				local voteThresh = votePlayerCount / voteRatio / 10
 				for candidate, votes in pairs(voteCount) do
 					if votes >= voteThresh then
 						DropPlayer(candidate, "You've been voteKicked from the server")
