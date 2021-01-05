@@ -7,70 +7,8 @@
 #### 1. Place voteKick.lua in
 `.../Resources/Server/CobaltEssentials/extensions/`
 
-**The next few steps are required to support and use this extension:**
-
-#### 2. ADD THE FOLLOWING TO:
-`.../Resources/Server/CobaltEssentials/lua/CobaltCommands.lua`
-
-NOTE THE SECTIONS THESE BELONG IN:
-
-```lua
----------------------------------------------FUNCTIONS---------------------------------------------
-
-local function votekick(player, ... )
-	extensions.triggerEvent("onVoteStart", player.playerID)
-end
-
-local function vote(player, voteID, ... )
-	extensions.triggerEvent("onVote", player.playerID, tonumber(voteID))
-end
-
-local function votecancel(player, ... )
-	extensions.triggerEvent("onVoteReset", player.playerID)
-end
-
----------------------------------------------PUBLICINTERFACE---------------------------------------------
-
-----COMMANDS----
-
-M.votekick = votekick
-M.vote = vote
-M.votecancel = votecancel
-```
-
-#### 3. ADD THE FOLLOWING TO:
-`.../Resources/Server/CobaltEssentials/CobaltDB/commands.json`
-
-MIND YOUR SYNTAX:
-
-```json
-"votekick":{	
-	"description":"Prints the playerList and starts a voteKick",
-	"level":0,
-	"arguments":0,
-	"sourceLimited":0,
-	"orginModule":"CC"
-},
-"vote":{	
-	"description":"Vote for a player to be kicked, \/vote <ID>",
-	"level":0,
-	"arguments":1,
-	"sourceLimited":0,
-	"orginModule":"CC"
-},
-"votecancel":{	
-	"description":"Cancel a voteKick",
-	"level":9,
-	"arguments":0,
-	"sourceLimited":0,
-	"orginModule":"CC"
-},
-```
-
-#### 4. ADD THE FOLLOWING TO:
+#### 2. Add an entry to turn it on in:
 `.../Resources/Server/CobaltEssentials/LoadExtensions.cfg`
-
-REPLACING OR PLACED UNDER THE EXAMPLE:
 
 ```cfg
 # Add your new extensions here as a key/value pair
