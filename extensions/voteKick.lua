@@ -1,7 +1,7 @@
 local M = {}
 
 --config these to your preference
-local voteTimeout = 60 --how long a voteKick is open, in seconds
+local voteTimeout = 60 --how long in ms a voteKick is open
 local immuneLevel = 2 --this CE player permission level and above cannot be voted for
 local voteRatio = 0.3 --what percent of connected players must vote for a candidate for them to be kicked
 
@@ -18,6 +18,38 @@ local function onInit()
 	RegisterEvent("onVote","onVote")
 	RegisterEvent("onVoteReset","onVoteReset")
 end
+
+--function to apply the new commands to the server
+local function applyCommands(targetDatabase, tables)
+	local appliedTables = {}
+
+	for tableName, table in pairs(tables) do
+		--check to see if the database already recognizes this table.
+		--if CobaltDB.tableExists(targetDatabase.CobaltDB_databaseName, tableName)  == false then --TODO: update this to an Object-Oriented method.
+		if targetDatabase[tableName]:exists() == false then
+			--write the key/value table into the database
+			for key, value in pairs(table) do
+				targetDatabase[tableName][key] = value
+			end
+			appliedTables[tableName] = tableName
+		end
+	end
+	return appliedTables
+end
+
+--info re: new commands for applyCommands to apply
+local voteKickCommands = 
+{
+	--orginModule[commandName] is where the command is executed from
+	-- Source-Limit-Map [0:no limit | 1:Chat Only | 2:RCON Only]
+	votekick =			{orginModule = "voteKick",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteKick"},
+	vote =				{orginModule = "voteKick",	level = 0,	arguments = 1,	sourceLimited = 0,	description = "Votes for the target player by ID, /vote <ID>"},
+	votecancel =			{orginModule = "voteKick",	level = 10,	arguments = 0,	sourceLimited = 0,	description = "Stops and resets a voteKick"}
+
+}
+
+--apply them
+applyCommands(commands, voteKickCommands)
 
 --called when someone uses /votekick
 --print the playerlist and give the players usage info for /vote
@@ -90,7 +122,7 @@ end
 
 --called when someone uses /voteCancel or after the vote timeout
 --we nil our voteCount and voteFor, set voteActive to false, and inform everyone it has been reset
-local function onVoteReset()
+local function onVoteReset(sender)
 	for candidate, votes in pairs(voteCount) do
 		voteCount[candidate] = nil
 	end
@@ -99,7 +131,7 @@ local function onVoteReset()
 	end
 	voteActive = false
 	SendChatMessage(-1, "voteKick reset!")
-	print("voteKick reset!")
+	print("voteKick reset by " .. players[sender].name .. "!")
 end
 
 --called once every tick
@@ -109,7 +141,7 @@ end
 --checks for players that have votes over the ratio threshold, and if they are, kicks them immediately,
 --they won't be able to rejoin until either the voteKick naturally times out or is manually reset.
 local function onTick(age)
-	age = age / 1000
+	--age = age / 1000
 	if voteActive == true then
 		if age >= voteLast + voteTimeout then
 			onVoteReset()
@@ -140,11 +172,27 @@ local function onTick(age)
 	end
 end
 
+local function votekick(player, ... )
+	onVoteStart(player.playerID)
+end
+
+local function vote(player, voteID, ... )
+	onVote(player.playerID, tonumber(voteID))
+end
+
+local function votecancel(player, ... )
+	onVoteReset(player.playerID)
+end
+
 M.onInit = onInit
 M.onTick = onTick
 
 M.onVoteStart = onVoteStart
 M.onVote = onVote
 M.onVoteReset = onVoteReset
+
+M.votekick = votekick
+M.vote = vote
+M.votecancel = votecancel
 
 return M
