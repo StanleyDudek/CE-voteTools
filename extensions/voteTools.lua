@@ -1,11 +1,11 @@
 local M = {}
 
 --config these to your preference
-local voteKickTimeout = 60 --how long in ms a voteKick is open
+local voteKickTimeout = 60 --how long in seconds a voteKick is open
 local immuneLevel = 2 --this CE player permission level and above cannot be voted for
 local voteKickRatio = 0.3 --what percent of connected players must vote for a candidate for them to be kicked
 
-local voteMapTimeout = 60 --how long in ms a voteKick is open
+local voteMapTimeout = 60 --how long in seconds a voteKick is open
 local voteMapRatio = 0.5 --what percent of connected players must vote for a candidate for them to be kicked
 
 --ignore these
@@ -290,7 +290,7 @@ end
 --checks for players that have votes over the ratio threshold, and if they are, kicks them immediately,
 --they won't be able to rejoin until either the voteKick naturally times out or is manually reset.
 local function onTick(age)
-	--age = age / 1000 --if you use default CE age calcs, uncomment this
+	age = age / 1000
 	if voteKickActive == true then
 		if age >= voteKickLast + voteKickTimeout then
 			onVoteReset()
