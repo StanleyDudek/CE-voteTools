@@ -6,10 +6,7 @@ local immuneLevel = 2 --this CE player permission level and above cannot be vote
 local voteKickRatio = 0.3 --what percent of connected players must vote for a candidate for them to be kicked
 
 local voteMapTimeout = 60 --how long in ms a voteKick is open
-
- --this CE player permission level and above cannot be voted for
 local voteMapRatio = 0.5 --what percent of connected players must vote for a candidate for them to be kicked
-
 
 --ignore these
 local playerCount = 0
