@@ -43,7 +43,7 @@ This extension's commands and aliases are:
 
 `/votecancel` or `/vc`
 
-`/votemap` pr `/vm`
+`/votemap` or `/vm`
 
 `/changemap` or `/cm`
 
