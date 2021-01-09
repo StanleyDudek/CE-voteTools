@@ -33,7 +33,11 @@ local voteMapRatio = 0.5 --what percent of connected players must vote for a map
 ```
 ---
 ## Usage:
-By default, Everyone can initiate voteKick and voteMap. I made this decision because the point of voting is that players on a server should be able to use these without the need for mods or admins to be present. voteKick uses IDs instead of names, because some names can be difficult to type. voteMap uses shortNames for ease of use.
+By default, Everyone can initiate voteKick and voteMap. I made this decision because the point of voting is that players on a server should be able to use these without the need for mods or admins to be present.
+
+voteKick uses IDs instead of names, because some names can be difficult to type.
+
+voteMap uses shortNames for ease of use.
 
 This extension's commands and aliases are:
 
