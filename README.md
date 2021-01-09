@@ -38,11 +38,15 @@ By default, Everyone can initiate voteKick and voteMap. I made this decision bec
 This extension's commands and aliases are:
 
 `/votekick` or `/vk`
+
 `/vote` or `/v`
+
 `/votecancel` or `/vc`
+
 `/votemap` pr `/vm`
 
 `/changemap` or `/cm`
+
 `/maps` or `/map` or `/maplist` or `/ml`
 
 * To start a voteKick, any player may use `/votekick` or `/vk`. This will print the list of players currently on the server, and give usage instructions for `/vote`.
