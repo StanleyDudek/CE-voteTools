@@ -58,3 +58,7 @@ This extension's commands and aliases are:
 * When a voteMap is active, players may use `/vote <shortName>` to vote for a map.
 
 * After a configurable length of time (60 seconds by default), the vote will reset, or server mod/admin/owner can use `/votecancel` at any time.
+
+* Admins can directly access a changemap with `/changemap <shortName>` or `/cm <shortName>`
+
+* Anyone can check the shortName/fullName pairs with `/maps` or `/map` or `/maplist` or `/ml`
