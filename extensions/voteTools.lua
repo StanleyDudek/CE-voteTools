@@ -452,7 +452,6 @@ local function changemap(sender, map, ...)
 				end
 			end
 			SendChatMessage(-1, "Map changed from " .. curMap .. " to " .. map)
-			SendChatMessage(-1, "Everyone will be kicked in 10 seconds, please rejoin!")
 		end
 		CE.delayExec(1, SendChatMessage, {-1,  "Everyone will be kicked in 10 seconds, please rejoin!"})
 		CE.delayExec(2, SendChatMessage, {-1,  "Everyone will be kicked in 9 seconds, please rejoin!"})
