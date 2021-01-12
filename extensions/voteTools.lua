@@ -494,6 +494,7 @@ M.votekick = votekick
 M.vk = votekick
 M.votemap = votemap
 M.v = votemap
+M.vm = votemap
 M.vote = vote
 M.v = vote
 M.votecancel = votecancel
