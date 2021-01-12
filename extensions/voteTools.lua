@@ -69,7 +69,9 @@ local mapNames = {
 	derby = "Derby",
 	ind = "Industrial",
 	
+	grid = "Gridmap",
 	gridmap = "Gridmap",
+	auto =  "Automation Test Track",
 	automation = "Automation Test Track",
 	east = "East Coast USA",
 	hirochi = "Hirochi Raceway",
@@ -113,15 +115,15 @@ local voteToolsCommands =
 	-- Source-Limit-Map [0:no limit | 1:Chat Only | 2:RCON Only]
 	votekick =			{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteKick"},
 	vk =				{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteKick"},
-	vote =				{orginModule = "voteTools",	level = 0,	arguments = 1,	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
-	v =					{orginModule = "voteTools",	level = 0,	arguments = 1,	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
+	vote =				{orginModule = "voteTools",	level = 0,	arguments = {"voteID"},	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
+	v =					{orginModule = "voteTools",	level = 0,	arguments = {"voteID"},	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
 	votecancel =		{orginModule = "voteTools",	level = 10,	arguments = 0,	sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
 	vc =				{orginModule = "voteTools",	level = 10,	arguments = 0,	sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
 	votemap =			{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
 	vm =				{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
 
-	changemap =			{orginModule = "voteTools",	level = 10,	arguments = 1,	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
-	cm =				{orginModule = "voteTools",	level = 10,	arguments = 1,	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
+	changemap =			{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
+	cm =				{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
 	maps =				{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
 	map =				{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
 	maplist =			{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
@@ -351,14 +353,14 @@ local function onTick(age)
 				local voteThresh = votePlayerCount / voteKickRatio / 10
 				for candidate, votes in pairs(voteKickCount) do
 					if votes >= voteThresh then
-						DropPlayer(candidate, "You've been voteKicked from the server")
+						DropPlayer(candidate, " You've been voteKicked from the server")
 					end
 				end
 			else
 				local voteThresh = 2
 				for candidate, votes in pairs(voteKickCount) do
 					if votes >= voteThresh then
-						DropPlayer(candidate, "You've been voteKicked from the server")
+						DropPlayer(candidate, " You've been voteKicked from the server")
 					end
 				end
 			end
@@ -399,7 +401,7 @@ end
 --function to kick everyone
 function dropAll()
 	for playerID, player in ipairs(players), players, -1 do
-		DropPlayerV(playerID, "Map changed!")
+		DropPlayerV(playerID, " Map changed!")
 	end
 end
 
