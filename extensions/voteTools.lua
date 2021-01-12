@@ -461,7 +461,7 @@ local function changemap(sender, map, ...)
 		CE.delayExec(9, SendChatMessage, {-1,  "Everyone will be kicked in 2 seconds, please rejoin!"})
 		CE.delayExec(10, SendChatMessage, {-1,  "Everyone will be kicked in 1 second, please rejoin!"})
 		CE.delayExec(11 , dropAll , {} )
-		return "Map changed from " .. curMap .. " to " .. map
+		return "You changed the map from " .. curMap .. " to " .. map
 	else
 		return "Invalid shortName"
 	end
