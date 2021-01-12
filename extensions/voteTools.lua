@@ -331,13 +331,8 @@ local function onVoteReset(sender)
 end
 
 --called once every tick
---checks if voteKick is active. If it is, but we've passed the timeout, it resets the voteKick, otherwise
---checks our current playercount and set the threshold of votes based on ratio configured above, then
---checks if the playercount is over three, if it is we will use our ratio to evaluate who to kick, otherwise the threshold is 2 votes, then
---checks for players that have votes over the ratio threshold, and if they are, kicks them immediately,
---they won't be able to rejoin until either the voteKick naturally times out or is manually reset.
 local function onTick(age)
-	--age = age / 1000 --if you use default CE age calcs, uncomment this
+	age = age / 1000
 	if voteKickActive == true then
 		if age >= voteKickLast + voteKickTimeout then
 			onVoteReset()
