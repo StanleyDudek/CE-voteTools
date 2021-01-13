@@ -113,21 +113,21 @@ local voteToolsCommands =
 {
 	--orginModule[commandName] is where the command is executed from
 	-- Source-Limit-Map [0:no limit | 1:Chat Only | 2:RCON Only]
-	votekick =			{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteKick"},
-	vk =				{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteKick"},
+	votekick =			{orginModule = "voteTools",	level = 0,	arguments = 0,		sourceLimited = 0,	description = "Prints usage info and starts a voteKick"},
+	vk =				{orginModule = "voteTools",	level = 0,	arguments = 0,		sourceLimited = 0,	description = "Prints usage info and starts a voteKick"},
 	vote =				{orginModule = "voteTools",	level = 0,	arguments = {"voteID"},	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
-	v =					{orginModule = "voteTools",	level = 0,	arguments = {"voteID"},	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
-	votecancel =		{orginModule = "voteTools",	level = 10,	arguments = 0,	sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
-	vc =				{orginModule = "voteTools",	level = 10,	arguments = 0,	sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
-	votemap =			{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
-	vm =				{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
+	v =				{orginModule = "voteTools",	level = 0,	arguments = {"voteID"},	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
+	votecancel =			{orginModule = "voteTools",	level = 10,	arguments = 0,		sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
+	vc =				{orginModule = "voteTools",	level = 10,	arguments = 0,		sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
+	votemap =			{orginModule = "voteTools",	level = 0,	arguments = 0,		sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
+	vm =				{orginModule = "voteTools",	level = 0,	arguments = 0,		sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
 
 	changemap =			{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and kicks everyone after 10 seconds"},
 	cm =				{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and kicks everyone after 10 seconds"},
-	maps =				{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
-	map =				{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
-	maplist =			{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
-	ml =				{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
+	maps =				{orginModule = "voteTools",	level = 1,	arguments = 0,		sourceLimited = 0,	description = "List the stock maps and their shortnames"},
+	map =				{orginModule = "voteTools",	level = 1,	arguments = 0,		sourceLimited = 0,	description = "List the stock maps and their shortnames"},
+	maplist =			{orginModule = "voteTools",	level = 1,	arguments = 0,		sourceLimited = 0,	description = "List the stock maps and their shortnames"},
+	ml =				{orginModule = "voteTools",	level = 1,	arguments = 0,		sourceLimited = 0,	description = "List the stock maps and their shortnames"},
 
 }
 
