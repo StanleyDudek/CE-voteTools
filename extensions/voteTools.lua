@@ -122,8 +122,8 @@ local voteToolsCommands =
 	votemap =			{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
 	vm =				{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
 
-	changemap =			{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
-	cm =				{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
+	changemap =			{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and kicks everyone after 10 seconds"},
+	cm =				{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and kicks everyone after 10 seconds"},
 	maps =				{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
 	map =				{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
 	maplist =			{orginModule = "voteTools",	level = 1,	arguments = 0,	sourceLimited = 0,	description = "List the stock maps and their shortnames"},
@@ -138,13 +138,8 @@ applyCommands(commands, voteToolsCommands)
 --print the playerlist and give the players usage info for /vote
 local function onVoteKickStart(sender)
 	if voteKickActive == true then
-		if sender ~= nil then
-			SendChatMessage(players[sender].playerID, "The voteKick timeout has not ended. Please wait, or admins use /votecancel")
-			CElog("voteKick already started!")
-		else
-			CElog("voteKick already started!")
-		end
-		
+		CElog("voteKick already started!")
+		return "The voteKick timeout has not ended. Please wait, or admins use /votecancel"
 	else
 
 		voteKickLast = os.clock()
@@ -170,14 +165,15 @@ local function onVoteKickStart(sender)
 		playersList = playersList .. specPlayersList
 		SendChatMessage(-1, playersList)
 		SendChatMessage(-1, "A voteKick has started! Please refer to the player list above and use /vote <ID> to vote to kick that player.")
-		CElog("voteKick started!")
+		CElog("voteKick started!", "voteTools")
+		return "voteKick started!"
 	end
 end
 
 local function onVoteMapStart(sender)
 	if voteMapActive == true then
-		SendChatMessage(players[sender].playerID, "The voteMap timeout has not ended. Please wait, or admins use /votecancel")
-		CElog("Votekick already active!")
+		CElog("voteMap already active!", "voteTools")
+		return "The voteMap timeout has not ended. Please wait, or admins use /votecancel"
 	else
 		voteMapLast = os.clock()
 		voteMapActive = true
@@ -187,152 +183,131 @@ local function onVoteMapStart(sender)
 		end
 		SendChatMessage(-1, mapList)
 		SendChatMessage(-1, "A voteMap has started! Please refer to the map list above and use /vote <shortName> to vote to change to that map.")
-		CElog("voteMap started!")
+		CElog("voteMap started!", "voteTools")
+		return "voteMap started!"
 	end
 end
 
 --called when someone uses /vote
 --if a vote is active, then evaluate the vote's validity and provide context
-local function onVoteKick(sender, voteID)
-	if voteKickActive == true then
-		if players[voteID] ~= nil then
-			if players[voteID].permissions.level < immuneLevel then
-				local voter = players[sender].playerID
-				local candidate = players[voteID].playerID
-				if voteKickFor[voter] ~= nil then
-					if sender ~= nil then
-						SendChatMessage(players[sender].playerID, "You cannot vote to kick " .. players[voteID].name .. ", you have already voted to kick " .. players[voteKickFor[voter]].name)
+local function onVote(sender, voteID)
+	if type(tonumber(voteID)) == "number" then
+		if voteKickActive == true then
+			if players[voteID] ~= nil then
+				if players[voteID].permissions.level < immuneLevel then
+					local voter = sender.playerID
+					local candidate = players[voteID].playerID
+					if voteKickFor[voter] ~= nil then
+						CElog("already voted", "voteTools")
+						return "You cannot vote to kick " .. players[voteID].name .. ", you have already voted to kick " .. players[voteKickFor[voter]].name
 					else
-					CElog("already voted")
-					end				
-				else
-					if voteKickCount[candidate] == nil then
-						voteKickCount[candidate] = 1
-						voteKickFor[voter] = candidate
-					else
-						voteKickCount[candidate] = voteKickCount[candidate] + 1
-						voteKickFor[voter] = candidate
+						if voteKickCount[candidate] == nil then
+							voteKickCount[candidate] = 1
+							voteKickFor[voter] = candidate
+						else
+							voteKickCount[candidate] = voteKickCount[candidate] + 1
+							voteKickFor[voter] = candidate
+						end
+						CElog("vote cast for " .. players[voteID], "voteTools")
+						return "You have voted to kick " .. players[voteID].name										
 					end
-					if sender ~= nil then
-						CElog(players[sender].name .. " voted to kick " .. players[voteID].name)
-						SendChatMessage(players[sender].playerID, "You have voted to kick " .. players[voteID].name)
-					else
-						CElog("vote cast")
-					end				
-				end
-			else
-				if sender ~= nil then
-					CElog(players[sender].name .. " voted to kick " .. players[voteID].name .. ", but they are immune!")
-					SendChatMessage(players[sender].playerID, players[voteID].name .. " is immune from voteKick")
 				else
-					CElog("immune ID")
+					CElog("immune ID!", "voteTools")
+					return players[voteID].name .. " is immune from voteKick"
 				end
-			end
-		else
-			if sender ~= nil then
-				CElog(players[sender].name .. " voted to kick using an invalid ID")
-				SendChatMessage(players[sender].playerID, "That player is not here, vote for someone else!")
 			else
-				CElog("invalid ID")
+				CElog("invalid ID", "voteTools")
+				return "That player is not here, vote for someone else!"
 			end
-		end
-	else
-		if sender ~= nil then
-			CElog(players[sender].name .. " tried to vote while voteKick was closed")
-			SendChatMessage(players[sender].playerID, "voteKick is not active, start one with /votekick")
 		else
-			CElog("vote not open")
+			CElog("vote while voteKick was closed")
+			return "voteKick is not active, start one with /votekick"
 		end
-	end
-	
-end
-
-local function onVoteMap(sender, map)
-local mapName
-	if voteMapActive == true then
-		local matchCount = 0
-		for shortName,fullName in pairs(mapNames) do
-			if tostring(shortName) == map then
-				matchCount = matchCount + 1
-			end
-		end
-		if matchCount == 1 then
+		
+	else
+		
+		local mapName
+		local map = voteID
+		if voteMapActive == true then
+			local matchCount = 0
 			for shortName,fullName in pairs(mapNames) do
 				if tostring(shortName) == map then
-					if sender ~= nil then
-						local voter = players[sender].playerID
-						mapName = tostring(fullName)
-						if voteMapFor[voter] ~= nil then
-							if sender ~= nil then
-								SendChatMessage(players[sender].playerID, "You cannot vote for " .. mapName .. ", you have already voted for " .. voteMapFor[voter])
-							else
-								--CElog("Cannot vote for " .. mapName .. ", already voted for " .. voteMapFor[voter])
-							end
-						else
-							if voteMapCount[mapName] == nil then
-								voteMapCount[mapName] = 1
-								voteMapFor[voter] = mapName
-							else
-								voteMapCount[mapName] = voteMapCount[mapName] + 1
-								voteMapFor[voter] = mapName
-							end
-							if sender ~= nil then
-								CElog(players[sender].name .. " voted for " .. mapName)
-								SendChatMessage(players[sender].playerID, "You have voted for " .. mapName)
-							else
-								--CElog("vote cast for:" .. mapName)
-							end
-						end
-					else
-						CElog("RCON voting not supported at this time! Use /changemap or /cm")
-					end
+					matchCount = matchCount + 1
 				end
 			end
-		else
-			if sender ~= nil then
-				CElog(players[sender].name .. " voted with an invalid shortName")
-				SendChatMessage(players[sender].playerID, "Invalid shortName")
+			if matchCount == 1 then
+				for shortName,fullName in pairs(mapNames) do
+					if tostring(shortName) == map then
+						--if sender.playerID ~= nil then
+							local voter = sender
+							mapName = tostring(fullName)
+							if voteMapFor[voter] ~= nil then
+								CElog("Cannot vote for " .. mapName .. ", already voted for " .. voteMapFor[voter], "voteTools")
+								return "You cannot vote for " .. mapName .. ", you have already voted for " .. voteMapFor[voter]
+								
+							else
+								if voteMapCount[mapName] == nil then
+									voteMapCount[mapName] = 1
+									voteMapFor[voter] = mapName
+								else
+									voteMapCount[mapName] = voteMapCount[mapName] + 1
+									voteMapFor[voter] = mapName
+								end
+								
+								CElog("vote cast for:" .. mapName, "voteTools")
+								return "You have voted for " .. mapName
+							end
+						--else
+							--CElog("RCON voting not supported at this time! Use /changemap or /cm", "voteTools")
+							--return "RCON voting not supported at this time! Use /changemap or /cm"
+						--end
+					end
+				end
 			else
-				--CElog("invalid shortName")
+				CElog("invalid shortName", "voteTools")
+				return "Invalid shortName"
 			end
-		end
-	else
-		if sender ~= nil then
-			CElog(players[sender].name .. " tried to vote while voteMap was closed")
-			SendChatMessage(players[sender].playerID, "voteMap is not active, start one with /votemap")
 		else
-			--CElog("vote not open")
+			CElog("vote while voteMap was closed", "voteTools")
+			return "voteMap is not active, start one with /votemap"
 		end
 	end
 end
+
 
 --called when someone uses /voteCancel or after the vote timeout
 --we nil our voteKickCount and voteKickFor, set voteKickActive to false, and inform everyone it has been reset
 local function onVoteReset(sender)
-	for candidate, votes in pairs(voteKickCount) do
-		voteKickCount[candidate] = nil
+
+	if voteMapActive == true or voteKickActive == true then
+		for candidate, votes in pairs(voteKickCount) do
+			voteKickCount[candidate] = nil
+		end
+		for voter, vote in pairs(voteKickFor) do
+			voteKickFor[voter] = nil
+		end
+		voteKickActive = false
+		
+		for map, votes in pairs(voteMapCount) do
+			voteMapCount[map] = nil
+		end
+		for voter, vote in pairs(voteMapFor) do
+			voteMapFor[voter] = nil
+		end
+		voteMapActive = false
+		
+		SendChatMessage(-1, "votes reset!")
+		CElog("votes reset!", "voteTools")
+		return "votes reset!"
+	else
+		CElog("no vote active!", "voteTools")
+		return "no votes active!"
 	end
-	for voter, vote in pairs(voteKickFor) do
-		voteKickFor[voter] = nil
-	end
-	voteKickActive = false
-	
-	for map, votes in pairs(voteMapCount) do
-		voteMapCount[map] = nil
-	end
-	for voter, vote in pairs(voteMapFor) do
-		voteMapFor[voter] = nil
-	end
-	voteMapActive = false
-	
-	SendChatMessage(-1, "votes reset!")
-	CElog("votes reset!")
-	return "votes reset!"
 end
 
 --called once every tick
 local function onTick(age)
-	age = age / 1000
+	--age = age / 1000
 	if voteKickActive == true then
 		if age >= voteKickLast + voteKickTimeout then
 			onVoteReset()
@@ -467,38 +442,17 @@ local function changemap(sender, map, ...)
 	end
 end
 
-local function votekick(player, ... )
-	onVoteKickStart(player.playerID)
-end
-
-local function vote(player, voteID, ... )
-	if type(tonumber(voteID)) == "number" then
-		onVoteKick(player.playerID, tonumber(voteID))
-	else
-		onVoteMap(player.playerID, voteID)
-	end
-end
-
-local function votecancel(player, ... )
-	onVoteReset(player.playerID)
-end
-
-local function votemap(player, ... )
-	onVoteMapStart(player.playerID)
-end
-
 M.onInit = onInit
 M.onTick = onTick
 
-M.votekick = votekick
-M.vk = votekick
-M.votemap = votemap
-M.v = votemap
-M.vm = votemap
-M.vote = vote
-M.v = vote
-M.votecancel = votecancel
-M.vc = votecancel
+M.votekick = onVoteKickStart
+M.vk = onVoteKickStart
+M.votemap = onVoteMapStart
+M.vm = onVoteMapStart
+M.vote = onVote
+M.v = onVote
+M.votecancel = onVoteReset
+M.vc = onVoteReset
 
 M.changemap = changemap
 M.cm = changemap
