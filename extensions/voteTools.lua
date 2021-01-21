@@ -334,7 +334,7 @@ end
 
 --called once every tick
 local function onTick(age)
-	age = age / 1000
+	--age = age / 1000
 	if voteKickActive == true then
 		if age >= voteKickLast + voteKickTimeout then
 			onVoteReset()
@@ -383,7 +383,7 @@ local function onTick(age)
 					end
 				end
 			else
-				local voteThresh = 2
+				local voteThresh = votePlayerCount
 				for candidate, votes in pairs(voteKickCount) do
 					if votes >= voteThresh then
 					
