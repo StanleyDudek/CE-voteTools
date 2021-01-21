@@ -5,9 +5,11 @@ M.COBALT_VERSION = "1.5.3A"
 local voteKickTimeout = 60 --how long in seconds a voteKick is open
 local immuneLevel = 2 --this CE player permission level and above cannot be voted for
 local voteKickRatio = 0.3 --what percent of connected players must vote for a candidate for them to be kicked
+local banThresh = 3
 
 local voteMapTimeout = 60 --how long in seconds a voteMap is open
-local voteMapRatio = 0.50 --what percent of connected players must vote for a map for the map to change
+local voteMapRatio = 0.51 --what percent of connected players must vote for a map for the map to change
+local voteMapPermissionLevel = 1 --what level player can do cotemap
 
 --ignore these
 local playerCount = 0
@@ -119,8 +121,8 @@ local voteToolsCommands =
 	v =					{orginModule = "voteTools",	level = 0,	arguments = {"voteID"},	sourceLimited = 0,	description = "Votes for a map by shortName, /vote <shortName>, or a target player by ID, /vote <ID>"},
 	votecancel =		{orginModule = "voteTools",	level = 10,	arguments = 0,	sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
 	vc =				{orginModule = "voteTools",	level = 10,	arguments = 0,	sourceLimited = 0,	description = "Stops and resets a voteKick or voteMap"},
-	votemap =			{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
-	vm =				{orginModule = "voteTools",	level = 0,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
+	votemap =			{orginModule = "voteTools",	level = voteMapPermissionLevel,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
+	vm =				{orginModule = "voteTools",	level = voteMapPermissionLevel,	arguments = 0,	sourceLimited = 0,	description = "Prints usage info and starts a voteMap"},
 
 	changemap =			{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
 	cm =				{orginModule = "voteTools",	level = 10,	arguments = {"target"},	sourceLimited = 0,	description = "Changes map and immediately stops server. HIGHLY RECCOMMENDED TO HAVE A RESTART SCRIPT."},
@@ -332,7 +334,7 @@ end
 
 --called once every tick
 local function onTick(age)
-	age = age / 1000
+	--age = age / 1000
 	if voteKickActive == true then
 		if age >= voteKickLast + voteKickTimeout then
 			onVoteReset()
@@ -348,14 +350,74 @@ local function onTick(age)
 				local voteThresh = votePlayerCount / voteKickRatio / 10
 				for candidate, votes in pairs(voteKickCount) do
 					if votes >= voteThresh then
-						DropPlayer(candidate, " You've been voteKicked from the server")
+					
+						CobaltDB.openDatabase("playersDB/" .. players[candidate].name)
+						kickCount = CobaltDB.query("playersDB/" .. players[candidate].name, "kickCount", "count")
+						if kickCount == nil or kickCount == 0 then
+							kickCount = 1
+							CobaltDB.set("playersDB/" .. players[candidate].name, "kickCount", "count", kickCount)
+						else
+							kickCount = kickCount + 1
+							if kickCount == banThresh then
+								reason = kickCount .. " strikes, you're out!"
+								CobaltDB.openDatabase("playerPermissions")
+								CobaltDB.set("playerPermissions", players[candidate].name, "banned", 1)
+								CobaltDB.set("playerPermissions", players[candidate].name, "banReason", kickCount .. " strikes, you're out!")
+								CobaltDB.set("playersDB/" .. players[candidate].name, "kickCount", "count", kickCount)
+								DropPlayer(candidate, " You've been voteKicked from the server")
+								onVoteReset()
+								return "Banned " .. players[candidate].name .. " for: " .. reason .. ", kickCount: " .. kickCount
+							else
+								if kickCount > banThresh then
+									return "Player has already been kicked " .. kickCount .. " times and banned"
+								else
+									CobaltDB.set("playersDB/" .. players[candidate].name, "kickCount", "count", kickCount)
+									DropPlayer(candidate, " You've been voteKicked from the server")
+									onVoteReset()
+								end
+							end
+					
+							DropPlayer(candidate, " You've been voteKicked from the server")
+							onVoteReset()
+						end
 					end
 				end
 			else
 				local voteThresh = 2
 				for candidate, votes in pairs(voteKickCount) do
 					if votes >= voteThresh then
-						DropPlayer(candidate, " You've been voteKicked from the server")
+					
+						CobaltDB.openDatabase("playersDB/" .. players[candidate].name)
+						kickCount = CobaltDB.query("playersDB/" .. players[candidate].name, "kickCount", "count")
+						if kickCount == nil or kickCount == 0 then
+							kickCount = 1
+							CobaltDB.set("playersDB/" .. players[candidate].name, "kickCount", "count", kickCount)
+							DropPlayer(candidate, " You've been voteKicked from the server")
+							onVoteReset()
+						else
+							kickCount = kickCount + 1
+							if kickCount == banThresh then
+								reason = kickCount .. " strikes, you're out!"
+								CobaltDB.openDatabase("playerPermissions")
+								CobaltDB.set("playerPermissions", players[candidate].name, "banned", 1)
+								CobaltDB.set("playerPermissions", players[candidate].name, "banReason", kickCount .. " strikes, you're out!")
+								CobaltDB.set("playersDB/" .. players[candidate].name, "kickCount", "count", kickCount)
+								DropPlayer(candidate, " You've been voteKicked from the server")
+								onVoteReset()
+								return "Banned " .. players[candidate].name .. " for: " .. reason .. ", kickCount: " .. kickCount
+							else
+								if kickCount > banThresh then
+									return "Player has already been kicked " .. kickCount .. " times and banned"
+								else
+									CobaltDB.set("playersDB/" .. players[candidate].name, "kickCount", "count", kickCount)
+									DropPlayer(candidate, " You've been voteKicked from the server")
+									onVoteReset()
+								end
+							end
+					
+							DropPlayer(candidate, " You've been voteKicked from the server")
+							onVoteReset()
+						end
 					end
 				end
 			end
@@ -381,7 +443,7 @@ local function onTick(age)
 							if tostring(fullName) == map then
 								map = shortName
 								M.changemap(0,map)
-								voteMapActive = false
+								onVoteReset()
 							end
 						end
 					end
@@ -394,7 +456,7 @@ local function onTick(age)
 							if tostring(fullName) == map then
 								map = shortName
 								M.changemap(0,map)
-								voteMapActive = false
+								onVoteReset()
 							end
 						end
 					end
