@@ -523,17 +523,17 @@ local function changemap(sender, map, ...)
 			end
 			SendChatMessage(-1, "Map changed from " .. curMap .. " to " .. map)
 		end
-		CE.delayExec(1, SendChatMessage, {-1,  "Everyone will be kicked in 10 seconds, please rejoin!"})
-		CE.delayExec(2, SendChatMessage, {-1,  "Everyone will be kicked in 9 seconds, please rejoin!"})
-		CE.delayExec(3, SendChatMessage, {-1,  "Everyone will be kicked in 8 seconds, please rejoin!"})
-		CE.delayExec(4, SendChatMessage, {-1,  "Everyone will be kicked in 7 seconds, please rejoin!"})
-		CE.delayExec(5, SendChatMessage, {-1,  "Everyone will be kicked in 6 seconds, please rejoin!"})
-		CE.delayExec(6, SendChatMessage, {-1,  "Everyone will be kicked in 5 seconds, please rejoin!"})
-		CE.delayExec(7, SendChatMessage, {-1,  "Everyone will be kicked in 4 seconds, please rejoin!"})
-		CE.delayExec(8, SendChatMessage, {-1,  "Everyone will be kicked in 3 seconds, please rejoin!"})
-		CE.delayExec(9, SendChatMessage, {-1,  "Everyone will be kicked in 2 seconds, please rejoin!"})
-		CE.delayExec(10, SendChatMessage, {-1,  "Everyone will be kicked in 1 second, please rejoin!"})
-		CE.delayExec(11 , dropAll , {} )
+		CE.delayExec(1000, SendChatMessage, {-1,  "Everyone will be kicked in 10 seconds, please rejoin!"})
+		CE.delayExec(2000, SendChatMessage, {-1,  "Everyone will be kicked in 9 seconds, please rejoin!"})
+		CE.delayExec(3000, SendChatMessage, {-1,  "Everyone will be kicked in 8 seconds, please rejoin!"})
+		CE.delayExec(4000, SendChatMessage, {-1,  "Everyone will be kicked in 7 seconds, please rejoin!"})
+		CE.delayExec(5000, SendChatMessage, {-1,  "Everyone will be kicked in 6 seconds, please rejoin!"})
+		CE.delayExec(6000, SendChatMessage, {-1,  "Everyone will be kicked in 5 seconds, please rejoin!"})
+		CE.delayExec(7000, SendChatMessage, {-1,  "Everyone will be kicked in 4 seconds, please rejoin!"})
+		CE.delayExec(8000, SendChatMessage, {-1,  "Everyone will be kicked in 3 seconds, please rejoin!"})
+		CE.delayExec(9000, SendChatMessage, {-1,  "Everyone will be kicked in 2 seconds, please rejoin!"})
+		CE.delayExec(10000, SendChatMessage, {-1,  "Everyone will be kicked in 1 second, please rejoin!"})
+		CE.delayExec(11000 , dropAll , {} )
 		return "You changed the map from " .. curMap .. " to " .. map
 	else
 		return "Invalid shortName"
