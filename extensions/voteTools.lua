@@ -1,5 +1,7 @@
 local M = {}
-M.COBALT_VERSION = "1.5.3A"
+M.COBALT_VERSION = "1.6.0"
+
+utils.setLogType("voteTools",93)
 
 --config these to your preference
 local voteKickTimeout = 60 --how long in seconds a voteKick is open
