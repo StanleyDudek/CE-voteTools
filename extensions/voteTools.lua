@@ -470,8 +470,10 @@ end
 
 --function to kick everyone
 function dropAll()
-	for playerID, player in ipairs(players), players, -1 do
-		DropPlayerV(playerID, " Map changed!")
+	for playerID in pairs(players) do
+		if type(playerID) == "number" then
+			DropPlayerV(playerID, " Map changed!")
+		end
 	end
 end
 
