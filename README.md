@@ -1,3 +1,5 @@
+## 🛑 OUTDATED UNTIL FURTHER NOTICE 🛑 USE AT OWN DISCRETION 🛑
+
 # CE-voteTools
 
 ### A CobaltEssentials extension to provide vote-based tools on BeamMP Servers
